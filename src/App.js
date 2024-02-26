@@ -1,13 +1,11 @@
 import './App.css';
-import { Link } from 'react-router-dom';
 import MyRouter from './router';
+import Navbar from './components/Navbar';
 
 function App() {
   return (
     <div>
-      <Link to="/">Home</Link>
-      <Link to="/about-us">About Us</Link>
-      <Link to="/contact-us">Contact Us</Link>
+      <Navbar />
 
       <MyRouter />
     </div>

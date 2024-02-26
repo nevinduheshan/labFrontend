@@ -1,13 +1,17 @@
-import logo from './logo.svg';
 import './App.css';
+import { Link } from 'react-router-dom';
+import MyRouter from './router';
 
 function App() {
   return (
-    <div className="App">
-       <div className="bg-blue-500 text-white p-4">
-      Hello Tailwind CSS!
+    <div>
+      <Link to="/">Home</Link>
+      <Link to="/about-us">About Us</Link>
+      <Link to="/contact-us">Contact Us</Link>
+
+      <MyRouter />
     </div>
-    </div>
+
   );
 }
 

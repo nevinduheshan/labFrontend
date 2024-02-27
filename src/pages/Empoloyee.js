@@ -37,7 +37,7 @@ function EmployeeList() {
       <div className="row">
         <div className="card">
           <div className="card-header">
-            <h4>
+            <h4 className="text-lg font-medium text-gray-900 ">
               Employee List
               <Link to="/add" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                 Add Employee
@@ -46,7 +46,7 @@ function EmployeeList() {
           </div>
           <div className="card-body">
             {error && <p>{error}</p>}
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                   <th scope="col" className="px-6 py-3">
@@ -68,16 +68,16 @@ function EmployeeList() {
               </thead>
               <tbody>
                 {employees.map((item) => (
-                  <tr key={item.empID}>
-                    <td>{item.empID}</td>
-                    <td>{item.empName}</td>
-                    <td>{item.empAddress}</td>
-                    <td>{item.empMNumber}</td>
+                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={item.empID}>
+                    <td className="px-6 py-4">{item.empID}</td>
+                    <td className="px-6 py-4">{item.empName}</td>
+                    <td className="px-6 py-4">{item.empAddress}</td>
+                    <td className="px-6 py-4">{item.empMNumber}</td>
                     <td>
-                      <Link to={`/edit/${item.empID}`} className="mr-4">
+                      <Link to={`/edit/${item.empID}`} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                         Edit
                       </Link>
-                      <button onClick={() => deleteEmployee(item.empID)}>
+                      <button onClick={() => deleteEmployee(item.empID)} className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
                         Delete
                       </button>
                     </td>

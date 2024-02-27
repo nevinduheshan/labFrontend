@@ -1,12 +1,37 @@
-import { useEffect } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-function Employee() {
-    useEffect(() => {
-      
-    
-    }, [])
-    
+function EmployeeList() {
+  const [employees, setEmployees] = useState([]);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    axios
+  .get("http://localhost:8080/api/employee/getAllEmployees")
+  .then((res) => {
+    console.log(res.data.content); // This will now correctly log the array of employees
+    setEmployees(res.data.content); // Adjusted from res.data.employees to res.data.content
+  })
+  .catch((error) => {
+    console.error("Error fetching data:", error);
+  });
+
+  }, []);
+
+  const deleteEmployee = (empID) => {
+    axios
+      .delete(`http://localhost:8080/api/employee/${empID}`)
+      .then(() => {
+        // Remove the deleted employee from the state to update the UI
+        setEmployees(employees.filter(employee => employee.empID !== empID));
+      })
+      .catch((error) => {
+        console.error("Error deleting employee:", error);
+        // Optionally, update your UI to show an error message
+      });
+  };
+
   return (
     <div className="container mx-auto my-auto">
       <div className="row">
@@ -14,62 +39,50 @@ function Employee() {
           <div className="card-header">
             <h4>
               Employee List
-              <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add Employee</button>
-              {/* <Link to="/">Add Employee</Link> */}
+              <Link to="/add" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                Add Employee
+              </Link>
             </h4>
           </div>
           <div className="card-body">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-              <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            {error && <p>{error}</p>}
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th scope="col" class="px-6 py-3">
+                  <th scope="col" className="px-6 py-3">
                     Id
                   </th>
-                  <th scope="col" class="px-6 py-3">
+                  <th scope="col" className="px-6 py-3">
                     Name
                   </th>
-                  <th scope="col" class="px-6 py-3">
+                  <th scope="col" className="px-6 py-3">
+                    Address
+                  </th>
+                  <th scope="col" className="px-6 py-3">
                     Number
                   </th>
-                  <th scope="col" class="px-6 py-3">
-                    Address
+                  <th scope="col" className="px-6 py-3">
+                    Actions
                   </th>
                 </tr>
               </thead>
               <tbody>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <th
-                    scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    Apple MacBook Pro 17"
-                  </th>
-                  <td class="px-6 py-4">Silver</td>
-                  <td class="px-6 py-4">Laptop</td>
-                  <td class="px-6 py-4">$2999</td>
-                </tr>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <th
-                    scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    Microsoft Surface Pro
-                  </th>
-                  <td class="px-6 py-4">White</td>
-                  <td class="px-6 py-4">Laptop PC</td>
-                  <td class="px-6 py-4">$1999</td>
-                </tr>
-                <tr class="bg-white dark:bg-gray-800">
-                  <th
-                    scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    Magic Mouse 2
-                  </th>
-                  <td class="px-6 py-4">Black</td>
-                  <td class="px-6 py-4">Accessories</td>
-                  <td class="px-6 py-4">$99</td>
-                </tr>
+                {employees.map((item) => (
+                  <tr key={item.empID}>
+                    <td>{item.empID}</td>
+                    <td>{item.empName}</td>
+                    <td>{item.empAddress}</td>
+                    <td>{item.empMNumber}</td>
+                    <td>
+                      <Link to={`/edit/${item.empID}`} className="mr-4">
+                        Edit
+                      </Link>
+                      <button onClick={() => deleteEmployee(item.empID)}>
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -78,4 +91,5 @@ function Employee() {
     </div>
   );
 }
-export default Employee;
+
+export default EmployeeList;
